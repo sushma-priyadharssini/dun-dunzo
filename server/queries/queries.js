@@ -55,25 +55,25 @@ const postProduct = (data) => {
       stId = results1.rows[0].store_id;
       console.log(stId);
       for(let i = 0; i < data.items.length; i++) {
-          var itemsQuery = "INSERT INTO items (item_name) VALUES('"+ i.name +"') ON CONFLICT (item_name) DO NOTHING";
+          var itemsQuery = "INSERT INTO items (item_name) VALUES('"+ data.items[i].name +"') ON CONFLICT (item_name) DO NOTHING";
           pool.query(itemsQuery, (error, results2) => {
             if (error) {
               throw error
             }
-            pool.query("SELECT item_id FROM items where item_name='" + i.name + "'", (error, results3) => {
+            pool.query("SELECT item_id FROM items where item_name='" +  data.items[i].name + "'", (error, results3) => {
               if (error) {
                 throw error
               }
               itId = results3.rows[0].item_id;
               console.log(itId);
-              var itemStoreQuery = "INSERT INTO store_item (store_id, item_id, price) VALUES("+ stId + "," + itId + "," + i.price + ")";
+              var itemStoreQuery = "INSERT INTO store_item (store_id, item_id, price) VALUES("+ stId + "," + itId + ",'" + data.items[i].price + "')";
               pool.query(itemStoreQuery, (error, results) => {
                 if (error) {
                   throw error
                 }
+                response.status(200).json({});
               })
             })
-
           })
       }
     })

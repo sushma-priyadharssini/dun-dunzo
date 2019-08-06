@@ -18,10 +18,6 @@ app.use(
 //initialize routes
 app.use('', routes);
 
-//const request = require('request');
-
-
-
 //listen for requests
 app.listen(process.env.port || 4000, function () {
   console.log('listening for requests...');
